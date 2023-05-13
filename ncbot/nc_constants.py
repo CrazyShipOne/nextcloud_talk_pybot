@@ -1,0 +1,4 @@
+conversation_read_write=0
+conversation_read_only=1
+chat_poll=1
+chat_history=0

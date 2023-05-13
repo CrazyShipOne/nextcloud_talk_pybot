@@ -1,0 +1,5 @@
+.history
+.vscode
+*.bat
+src/__pycache__
+.env
