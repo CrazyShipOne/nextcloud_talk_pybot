@@ -1,10 +1,10 @@
-# NC Bot - A Nextcloud Chat Bot
+# 💬 👲 NC Bot - A Nextcloud Chat Bot
 
 A simple standalone chat bot empowered by LLM services and AI models working with [Nextcloud](https://nextcloud.com) [Talk App](https://nextcloud.com/talk/).
 
-## Quick Start
+## 🏃 Quick Start
 
-### Linux
+### 💻 Linux
 
 ```bash
 git clone https://github.com/CrazyShipOne/nextcloud_talk_pybot.git
@@ -16,7 +16,7 @@ pip install -r requirements.txt
 
 > **Ensure edit .env by your credentials and tokens.**  refer to [.env / Docker Environment Variable](#envs)
 
-### docker
+### 🌅 docker
 ```bash
 git clone https://github.com/CrazyShipOne/nextcloud_talk_pybot.git
 cd nextcloud_talk_pybot
@@ -31,7 +31,7 @@ docker run -d \
 
 > **Ensure add environment variables** refer to [.env / Docker Environment Variable](#envs)
 
-## Configuration
+## 📕 Configuration
 
 ### <a name="envs"></a> .env / Docker Environment Variable
 
@@ -50,7 +50,7 @@ Set if plugin will be used.
 `OPENAI_API_KEY`: OpenAI's api key.
 
 
-## Usage
+## 🚊 Usage
 
 1. Register a new account for chat bot in Nextcloud
 2. Start the agent with new account's credentails
@@ -58,7 +58,7 @@ Set if plugin will be used.
 4. Type `![plugin]:[function] message` to chat, for example `!openai:chat Who are you?`. Any message not start with **!** will be responded with a help message.
 
 
-## Road Map
+## ▶️ Road Map
 
 * Add LLM plugins:
     * OpenAI (Partly finished)
