@@ -2,6 +2,9 @@
 
 A simple standalone chat bot empowered by LLM services and AI models working with [Nextcloud](https://nextcloud.com) [Talk App](https://nextcloud.com/talk/).
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
+![Python: Version](https://img.shields.io/badge/python-%3E%3D3.7-green)
+
 ## 🏃 Quick Start
 
 ### 💻 Linux
