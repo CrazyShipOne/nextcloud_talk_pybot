@@ -8,6 +8,8 @@ import ncbot.config as ncconfig
 
 nc_agent = NCHelper()
 
+conversation_type_changelog = 4
+
 def start():
     
     while True:
@@ -16,6 +18,8 @@ def start():
             unread_conversation = nc_agent.get_unread_conversation_list()
             logger.debug(f'found {len(unread_conversation)} unread conversations')
             for conversation in unread_conversation:
+                if conversation['type'] == conversation_type_changelog:
+                    continue
                 chats = nc_agent.get_chat_list(conversation['token'],conversation['unreadMessages'])
                 unread_chats += chats
                 logger.debug(f'found {len(chats)} unread chats from token {conversation["token"]}')
