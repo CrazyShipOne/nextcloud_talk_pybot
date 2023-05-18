@@ -30,7 +30,7 @@ prompt = PromptTemplate(template= template, input_variables=["history","input"])
 def chat3(userid, username, input):
     history_util = get_instance()
     history = history_util.get_memory(userid)
-    llm_chain = ConversationChain(llm=llm_gpt3, memory = history, verbose=True, prompt=prompt)
+    llm_chain = ConversationChain(llm=llm_gpt3, memory = history, verbose=False, prompt=prompt)
     response = llm_chain.predict(input=input)
     history_util.save_memory(userid, history)
     return response
