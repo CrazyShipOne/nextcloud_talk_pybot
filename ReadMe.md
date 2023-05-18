@@ -51,12 +51,12 @@ docker run -d \
 `LOG_LEVEL`: **Optional**. Output logging level,  **default: Info**<br/>
 
 #### Chat History:
-`MAX_CHAT_HISTORY`: **Optional**. Maximum chat history stored, set 0 to not store. **default: 0**<br/>
+`MAX_CHAT_HISTORY`: **Optional**. Maximum chat history stored, set 0 to not store. Caution: Set to a large number will cost lots of tokens! **default: 0**<br/>
 `HISTORY_STORAGE`: **Optional**. Storage to save chat history, values are below. **default: memory**<br/>
 > `memory`: save in memory<br/>
 > `redis`: save in redis
 
-`REDIS_HOST`: **Required if `HISTORY_STORAGE` is 'redis'** Redis host.<br/>
+`REDIS_HOST`: **Required if `HISTORY_STORAGE` is 'redis'.** Redis host.<br/>
 `REDIS_PORT`: **Optional**. Redis port. **default: 6379**<br/>
 `REDIS_PASS`: **Optional**. Redis password.<br/>
 `REDIS_DB`: **Optional**. Redis db number. **default: 0**<br/>
