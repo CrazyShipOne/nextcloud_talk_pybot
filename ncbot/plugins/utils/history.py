@@ -72,7 +72,7 @@ in_memory_util = InMemoryHistoryUtil()
 redis_memory_util = RedisMemoryHistoryUtil()
 
 def get_instance():
-    match save_type:
+    match ncconfig.cf.save_type:
         case 'memory':
             return in_memory_util
         case 'redis':

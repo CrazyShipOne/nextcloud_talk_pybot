@@ -14,7 +14,9 @@ class RedisMemoryHistoryUtil(MemoryHistoryUtil):
 
     def _save_to_memory(self, userid, history):
         index_key = super()._get_index_key(userid)
-        conn.lpush(index_key, json.dumps(history[-2:]))
+        push_list = history[-2:]
+        for ele in push_list:
+            conn.rpush(index_key, json.dumps(ele))
 
     def _get_from_memory(self, userid):
         if not super()._isStore():

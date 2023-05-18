@@ -4,6 +4,6 @@ import ncbot.command.commander as commander
 import ncbot.config as ncconfig
 
 def start():
-    ncconfig.conf.checkEnv()
+    ncconfig.cf.checkEnv()
     commander.load_plugin(commander.plugin_path)
     runner.start()
