@@ -92,4 +92,7 @@ class Command:
 
 
     def execute(self):
-        return self.func(self.user_id, self.user_name, self.value)
+        try:
+            return self.func(self.user_id, self.user_name, self.value)
+        except Exception as e:
+            return 'Something wrong happened! Please try again later.'
