@@ -18,6 +18,18 @@ class Config():
         self.start_time = int(time.time())
         self.max_message = int(os.getenv('MAX_MESSAGE', default=10))
 
+        #plugins
+        self.save_type = os.getenv('HISTORY_STORAGE','memory')
+        self.max_chat_history = int(os.getenv('MAX_CHAT_HISTORY',0))
+
+        
+        self.redis_host = os.getenv('REDIS_HOST')
+        self.redis_port = int(os.getenv('REDIS_PORT',6379))
+        self.redis_pass = os.getenv('REDIS_PASS',None)
+        self.redis_db = int(os.getenv('REDIS_DB',0))
+
+        self.hf_token = os.getenv('HFACE_TOEKN')
+
     
     def checkEnv(self):
         if not self.base_url:
@@ -27,3 +39,6 @@ class Config():
         if not self.password:
             raise Exception("NC_PASSWORD is not set")
         self.only_new_message_after_start = bool(self.only_new_message_after_start)
+
+
+cf = Config()

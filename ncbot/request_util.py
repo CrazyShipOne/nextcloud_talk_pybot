@@ -1,8 +1,6 @@
 import requests
-from config import Config
 import json
-
-cfg = Config()
+import ncbot.config as ncconfig
 
 
 headers = {
@@ -13,24 +11,24 @@ headers = {
 
 
 def get_response(uri,params=None):
-    url = cfg.base_url + check_uri_prefix(uri)
+    url = ncconfig.cf.base_url + check_uri_prefix(uri)
     if params:
         url = add_query_params(url, params)
-    response = requests.get(url=url, auth=(cfg.username, cfg.password), headers=headers)
+    response = requests.get(url=url, auth=(ncconfig.cf.username, ncconfig.cf.password), headers=headers)
     return response_check(response, uri)
 
 
 def post_response(uri, data):
-    url = cfg.base_url + check_uri_prefix(uri)
+    url = ncconfig.cf.base_url + check_uri_prefix(uri)
     json_data = json.dumps(data)
-    response = requests.post(url=url, auth=(cfg.username, cfg.password), data=json_data, headers=headers)
+    response = requests.post(url=url, auth=(ncconfig.cf.username, ncconfig.cf.password), data=json_data, headers=headers)
     return response_check(response, uri, data)
 
 
 def put_response(uri, data):
-    url = cfg.base_url + check_uri_prefix(uri)
+    url = ncconfig.cf.base_url + check_uri_prefix(uri)
     json_data = json.dumps(data)
-    response = requests.put(url=url, auth=(cfg.username, cfg.password), data=json_data, headers=headers)
+    response = requests.put(url=url, auth=(ncconfig.cf.username, ncconfig.cf.password), data=json_data, headers=headers)
     return response_check(response, uri, data)
 
 

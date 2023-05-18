@@ -1,8 +1,7 @@
-from config import Config
 import request_util as rutil
 import nc_constants
+import ncbot.config as ncconfig
 
-cfg = Config()
 
 class NCHelper:
 
@@ -18,8 +17,8 @@ class NCHelper:
 
     def get_unread_conversation_list(self):
         params = {'noStatusUpdate':0, 'includeStatus':True}
-        if cfg.only_new_message_after_start:
-            params['modifiedSince'] = cfg.start_time
+        if ncconfig.cf.only_new_message_after_start:
+            params['modifiedSince'] = ncconfig.cf.start_time
         mesg = rutil.get_response(self.final_url_v4('room'), params=params)
         unread = []
         for ele in mesg['ocs']['data']:
@@ -29,7 +28,7 @@ class NCHelper:
     
 
     def get_chat_list(self, token, mesg_count=0):
-        limit = mesg_count if mesg_count < cfg.max_message else cfg.max_message
+        limit = mesg_count if mesg_count < ncconfig.cf.max_message else ncconfig.cf.max_message
         params = {
             'lookIntoFuture':nc_constants.chat_history,
             'limit':limit,

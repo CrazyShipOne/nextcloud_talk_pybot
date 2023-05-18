@@ -10,7 +10,8 @@ class NCChat:
         self.chat_message = chat['message']
         self.dealable = self.check_comment_type_available(self.chat_message)
         self.response = None
-        self.actor_name = chat['actorId']
+        self.user_id = chat['actorId']
+        self.user_name = chat['actorDisplayName']
 
 
     def check_comment_type_available(self, comment:str):

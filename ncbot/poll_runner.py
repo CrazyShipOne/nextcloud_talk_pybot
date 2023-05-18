@@ -1,12 +1,11 @@
 import time
 from nc_helper import NCHelper
-from config import Config
 import traceback
 from nc_chat import NCChat
 import ncbot.command.commander as commander
 from log_config import logger
+import ncbot.config as ncconfig
 
-cfg = Config()
 nc_agent = NCHelper()
 
 def start():
@@ -26,14 +25,14 @@ def start():
         except Exception as e:
             traceback.print_exc()
             logger.error(e)
-        time.sleep(cfg.poll_interval_s)
+        time.sleep(ncconfig.cf.poll_interval_s)
 
 
 def deal_unread_chats(unread_chats):
     unread_chats = sorted(unread_chats, key=lambda x:x['id'])
     for chat in unread_chats:
         chatC = NCChat(chat)
-        if chatC.actor_name == cfg.username:
+        if chatC.user_name == ncconfig.cf.username:
             skip_self_unread(chatC)
         else:
             try:

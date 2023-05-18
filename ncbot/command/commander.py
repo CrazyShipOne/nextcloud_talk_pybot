@@ -31,7 +31,7 @@ def dispatch(chat: NCChat):
     ret = 'test'
     #nc_agent.lock_conversation(chat.conversation_token)
 
-    command = Command(chat.chat_message)
+    command = Command(chat)
     if command.matched_func:
         ret = command.execute()
     elif command.matched_plugin:
@@ -63,12 +63,15 @@ def load_plugin(path):
 
 class Command:
 
-    def __init__(self, commandstr: str):
+    def __init__(self, chat: NCChat):
+        commandstr:str = chat.chat_message
         self.matched_func = False
         self.matched_plugin = False
         self.plname = None
         self.funcname = None
         self.value = None
+        self.user_id = chat.user_id
+        self.user_name = chat.user_name
         if not commandstr.startswith('!'):
             return
         try:
@@ -89,4 +92,4 @@ class Command:
 
 
     def execute(self):
-        return self.func(self.value)
+        return self.func(self.user_id, self.user_name, self.value)

@@ -3,7 +3,7 @@
 A simple standalone chat bot empowered by LLM services and AI models working with [Nextcloud](https://nextcloud.com) [Talk App](https://nextcloud.com/talk/).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](https://opensource.org/licenses/MIT)
-![Python: Version](https://img.shields.io/badge/python-%3E%3D3.7-green)
+![Python: Version](https://img.shields.io/badge/python-%3E%3D3.10-green)
 
 ## 🏃 Quick Start
 
@@ -36,21 +36,39 @@ docker run -d \
 
 ## 📕 Configuration
 
-### <a name="envs"></a> .env / Docker Environment Variable
+### <a name="envs"></a> Docker Environment Variable / .env
 
+#### Nextcloud:
 `NC_BASE_URL`: **Required**. Base url of nextcloud endpoint. For example **https://www.mynextcloud.com:8080**.<br/>
 `NC_USERNAME`: **Required**. User name of created bot.<br/>
 `NC_PASSWORD`: **Required**. Password of created bot.<br/>
+
+#### Poll:
 `POLL_INTERVAL`: **Optional**. Message polling interval in seconds, **default: 5**.<br/>
 `ONLY_NEW`: **Optional**. Set **True** to poll messages send after the bot is started, **False** to poll all unread messages, **default: True**.<br/>
-`LOG_LEVEL`: **Optional**. Output logging level,  **default: Info**
-`MAX_MESSAGE`: **Optional**. Maximum unread messages polled from one chat,  **default: 10**
+`MAX_MESSAGE`: **Optional**. Maximum unread messages polled from one chat,  **default: 10**<br/>
+#### Debug:
+`LOG_LEVEL`: **Optional**. Output logging level,  **default: Info**<br/>
 
-### Plugins: 
+#### Chat History:
+`MAX_CHAT_HISTORY`: **Optional**. Maximum chat history stored, set 0 to not store. **default: 0**<br/>
+`HISTORY_STORAGE`: **Optional**. Storage to save chat history, values are below. **default: memory**<br/>
+> `memory`: save in memory<br/>
+> `redis`: save in redis
+
+`REDIS_HOST`: **Required if `HISTORY_STORAGE` is 'redis'** Redis host.<br/>
+`REDIS_PORT`: **Optional**. Redis port. **default: 6379**<br/>
+`REDIS_PASS`: **Optional**. Redis password.<br/>
+`REDIS_DB`: **Optional**. Redis db number. **default: 0**<br/>
+
+#### Plugins: 
 Set if plugin will be used.
 
-#### OpanAI
+##### OpanAI
 `OPENAI_API_KEY`: OpenAI's api key.
+
+##### HuggingFace
+`HFACE_TOEKN`: HuggingFace's token.
 
 
 ## 🚊 Usage
