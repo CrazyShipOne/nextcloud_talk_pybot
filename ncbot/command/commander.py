@@ -9,56 +9,7 @@ current_command = {}
 
 plugin_path = 'ncbot/plugins'
 
-
-def get_default_desc():
-    desc = "You should type !Plugin:Function to talk with me.\nCurrent supported plugins are:\n"
-    for key in current_command:
-        desc += key+'\n'
-    desc += "Type !Plugin to see detail about plugin"
-    return desc
-
-
-def get_plugin_desc(plname):
-    desc = 'Supported commands are:\n'
-    plugin = current_command[plname]
-    for key in plugin:
-        desc += f'{key}: {plugin[key]["desc"]}\n'
-    desc += f'type !{plname}:command input to use it'
-    return desc
-
-
-def dispatch(chat: NCChat):
-    ret = 'test'
-    #nc_agent.lock_conversation(chat.conversation_token)
-
-    command = Command(chat)
-    if command.matched_func:
-        ret = command.execute()
-    elif command.matched_plugin:
-        ret = get_plugin_desc(command.plname)
-    else:
-        ret = get_default_desc()
-    #nc_agent.unlock_conversation(chat.conversation_token)
-    chat.response = ret
-
-
-def register(plname, funcname, desc, func):
-    if plname in current_command:
-        current_command[plname][funcname] = {'desc':desc, 'func':func}
-    else:
-        current_command[plname] = {funcname: {'desc':desc, 'func':func}}
-
-
-def load_plugin(path):
-    for filename in os.listdir(path):
-        tmppath = os.path.join(path, filename)
-        if os.path.isfile(tmppath):
-            if filename.endswith('.py') and not filename.startswith('__init'):
-                spec = importlib.util.spec_from_file_location(filename[:-3], os.path.join(path, filename))
-                module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
-        elif os.path.isdir(tmppath):
-            load_plugin(tmppath)
+user_command_cache = {}
 
 
 class Command:
@@ -96,3 +47,77 @@ class Command:
             return self.func(self.user_id, self.user_name, self.value)
         except Exception as e:
             return 'Something wrong happened! Please try again later.'
+
+
+def get_default_desc():
+    desc = "You should type !Plugin:Function to talk with me.\n\nCurrent supported plugins are:\n"
+    for key in current_command:
+        desc += key+'\n'
+    desc += "\nType !Plugin to see detail about plugin.\n"
+    desc += "The last command will be remembered if capable, so you should not type the command first next time."
+    return desc
+
+
+def get_plugin_desc(plname):
+    desc = 'Supported commands are:\n'
+    plugin = current_command[plname]
+    for key in plugin:
+        desc += f'{key}: {plugin[key]["desc"]}\n'
+    desc += f'type !{plname}:command input to use it.'
+    return desc
+
+
+def find_last_command(chat: NCChat):
+    if not chat.chat_message.startswith('!'):
+        key = f'command_{chat.user_id}'
+        if key in user_command_cache:
+            command = user_command_cache[key]
+            chat.chat_message = f'{command} {chat.chat_message}'
+
+
+def save_last_command(chat: NCChat, command: Command):
+    if current_command[command.plname][command.funcname]['remember']:
+        key = f'command_{chat.user_id}'
+        user_command_cache[key] = f'!{command.plname}:{command.funcname}'
+        return True
+    return False
+
+
+def dispatch(chat: NCChat):
+    ret = 'test'
+    #nc_agent.lock_conversation(chat.conversation_token)
+
+    find_last_command(chat)
+    command = Command(chat)
+    if command.matched_func:
+        ret = command.execute()
+        if save_last_command(chat, command):
+            ret += f'\n\n(The command !${command.plname}:{command.funcname} is remembered, type without command to continue use this function. Otherwize type other commands.)'
+    elif command.matched_plugin:
+        ret = get_plugin_desc(command.plname)
+    else:
+        ret = get_default_desc()
+    #nc_agent.unlock_conversation(chat.conversation_token)
+    chat.response = ret
+
+
+def register(plname, funcname, desc, func, remember_command):
+    if plname in current_command:
+        current_command[plname][funcname] = {'desc':desc, 'func':func, 'remember':remember_command}
+    else:
+        current_command[plname] = {funcname: {'desc':desc, 'func':func, 'remember':remember_command}}
+
+
+def load_plugin(path):
+    for filename in os.listdir(path):
+        tmppath = os.path.join(path, filename)
+        if os.path.isfile(tmppath):
+            if filename.endswith('.py') and not filename.startswith('__init'):
+                spec = importlib.util.spec_from_file_location(filename[:-3], os.path.join(path, filename))
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+        elif os.path.isdir(tmppath):
+            load_plugin(tmppath)
+
+
+
