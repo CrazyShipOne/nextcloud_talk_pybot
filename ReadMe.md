@@ -40,8 +40,8 @@ docker run -d \
 
 #### Nextcloud:
 `NC_BASE_URL`: **Required**. Base url of nextcloud endpoint. For example **https://www.mynextcloud.com:8080**.<br/>
-`NC_USERNAME`: **Required**. User name of created bot.<br/>
-`NC_PASSWORD`: **Required**. Password of created bot.<br/>
+`NC_USERNAME`: **Required**. User name of created bot account.<br/>
+`NC_PASSWORD`: **Required**. Either user password or app password of created bot account.<br/>
 
 #### Poll:
 `POLL_INTERVAL`: **Optional**. Message polling interval in seconds, **default: 5**.<br/>
