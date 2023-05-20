@@ -5,10 +5,9 @@ from nc_chat import NCChat
 import ncbot.command.commander as commander
 from log_config import logger
 import ncbot.config as ncconfig
+import ncbot.nc_constants as ncconstants
 
 nc_agent = NCHelper()
-
-conversation_type_changelog = 4
 
 def start():
     
@@ -18,7 +17,7 @@ def start():
             unread_conversation = nc_agent.get_unread_conversation_list()
             logger.debug(f'found {len(unread_conversation)} unread conversations')
             for conversation in unread_conversation:
-                if conversation['type'] == conversation_type_changelog:
+                if conversation['type'] == ncconstants.conversation_type_changelog:
                     continue
                 chats = nc_agent.get_chat_list(conversation['token'],conversation['unreadMessages'])
                 unread_chats += chats
@@ -36,7 +35,7 @@ def deal_unread_chats(unread_chats):
     unread_chats = sorted(unread_chats, key=lambda x:x['id'])
     for chat in unread_chats:
         chatC = NCChat(chat)
-        if chatC.user_name == ncconfig.cf.username:
+        if chatC.user_id == ncconfig.cf.username:
             skip_self_unread(chatC)
         else:
             try:
@@ -53,7 +52,7 @@ def skip_self_unread(chat: NCChat):
 
 
 def send_response(chat: NCChat):
-    if nc_agent.send_message(chat.conversation_token, chat.chat_id, chat.response):
+    if nc_agent.send_message(chat.conversation_token, chat.chat_id, chat.response, chat.chat_message,chat.user_id, chat.chat_type == ncconstants.chat_type_user):
         nc_agent.mark_chat_read(chat.conversation_token, chat.chat_id)
 
 

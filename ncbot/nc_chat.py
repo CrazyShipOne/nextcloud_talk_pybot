@@ -12,6 +12,7 @@ class NCChat:
         self.response = None
         self.user_id = chat['actorId']
         self.user_name = chat['actorDisplayName']
+        self.chat_type = chat['actorType']
 
 
     def check_comment_type_available(self, comment:str):
