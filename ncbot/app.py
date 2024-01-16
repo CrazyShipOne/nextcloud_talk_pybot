@@ -1,5 +1,4 @@
-from config import Config
-import poll_runner as runner
+import ncbot.poll_runner as runner
 import ncbot.command.commander as commander
 import ncbot.config as ncconfig
 

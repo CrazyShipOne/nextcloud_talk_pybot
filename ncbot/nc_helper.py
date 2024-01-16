@@ -1,5 +1,5 @@
-import request_util as rutil
-import nc_constants
+import ncbot.request_util as rutil
+import ncbot.nc_constants as nc_constants
 import ncbot.config as ncconfig
 
 
