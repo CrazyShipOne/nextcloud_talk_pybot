@@ -16,7 +16,7 @@ cp .env.example .env
 pip install -r requirements.txt
 ./start.sh
 ```
-
+**Required python version >= 3.11**. It's easy to manage environment with [miniconda](https://docs.anaconda.com/free/miniconda/index.html), [venv](https://docs.python.org/3/library/venv.html) or any other favorite tools.
 > **Ensure edit .env by your credentials and tokens.**  refer to [.env / Docker Environment Variable](#envs)
 
 ### 🌅 docker
