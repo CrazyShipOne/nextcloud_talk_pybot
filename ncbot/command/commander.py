@@ -127,7 +127,7 @@ def load_plugin(path):
                     except Exception as ex:
                         logger.error(f'Load plugin {module.__file__} error: {ex}')
                 else:
-                    logger.warning(f'Invalid plugin {module.__file__}: no required variable lugins_required_module_version found')
+                    logger.warning(f'Invalid plugin {module.__file__}: no required variable plugins_required_module_version found')
         elif os.path.isdir(tmppath):
             load_plugin(tmppath)
 
