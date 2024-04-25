@@ -1,11 +1,13 @@
 import ncbot.command.base as base
 import requests
 import ncbot.config as ncconfig
+import os
 
 plugin_name = 'hface'
 
+hf_token = os.getenv('HFACE_TOEKN')
 API_URL = "https://api-inference.huggingface.co/models/"
-headers = {"Authorization": f"Bearer {ncconfig.cf.hf_token}"}
+headers = {"Authorization": f"Bearer {hf_token}"}
 
 
 @base.command(plname=plugin_name, funcname='t0',desc="Chat with bigscience's T0 model")

@@ -3,9 +3,10 @@ from abc import abstractmethod
 from langchain.schema import messages_from_dict, messages_to_dict
 from langchain.memory import ConversationBufferMemory, ChatMessageHistory
 import ncbot.config as ncconfig
+from ncbot.storages.storage_store import StorageStore
 
 class MemoryHistoryUtil():
-    
+    storage_store:StorageStore = StorageStore.get_instance()
 
     def __init__(self):
         self.max_chat_history = ncconfig.cf.max_chat_history
@@ -15,23 +16,16 @@ class MemoryHistoryUtil():
     def _isStore(self):
         return self.max_chat_history != 0
 
+  
 
-    @abstractmethod
-    def _save_to_memory(self, userid, history):
-        pass
-
-    @abstractmethod
-    def _get_from_memory(self, userid):
-        pass
-
-
-    @abstractmethod
     def clear_memory(self, userid):
-        pass
+        self.storage_store.remove_key(self._get_index_key(userid))
 
 
     def get_memory(self, userid):
-        dict = self._get_from_memory(userid)
+        if not self._isStore():
+            return None
+        dict = self.storage_store.get_key_list_value(self._get_index_key(userid))
         if dict == None or len(dict) == 0:
             return ConversationBufferMemory()
         memory_dict = self.__dict_to_message(dict)
@@ -41,9 +35,11 @@ class MemoryHistoryUtil():
 
 
     def save_memory(self, userid, history: ConversationBufferMemory):
+        if not self._isStore():
+            return
         chat_memory = history.chat_memory
         memory = self.__tuncate_memory(chat_memory)
-        self._save_to_memory(userid, memory)
+        self.storage_store.set_key_list_value(self._get_index_key(userid), memory)
 
 
     def __tuncate_memory(self, history):
@@ -65,15 +61,4 @@ class MemoryHistoryUtil():
         return messages_from_dict(load_dict)
     
 
-from ncbot.plugins.utils.history_memory import InMemoryHistoryUtil
-from ncbot.plugins.utils.history_redis import RedisMemoryHistoryUtil
-
-in_memory_util = InMemoryHistoryUtil()
-redis_memory_util = RedisMemoryHistoryUtil()
-
-def get_instance():
-    match ncconfig.cf.save_type:
-        case 'memory':
-            return in_memory_util
-        case 'redis':
-            return redis_memory_util
+history_util = MemoryHistoryUtil()

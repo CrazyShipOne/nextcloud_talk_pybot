@@ -28,8 +28,6 @@ class Config():
         self.redis_pass = os.getenv('REDIS_PASS',None)
         self.redis_db = int(os.getenv('REDIS_DB',0))
 
-        self.hf_token = os.getenv('HFACE_TOEKN')
-
     
     def checkEnv(self):
         if not self.base_url:

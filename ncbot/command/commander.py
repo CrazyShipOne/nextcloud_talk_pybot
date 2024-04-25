@@ -2,6 +2,10 @@ from ncbot.nc_helper import NCHelper
 from ncbot.nc_chat import NCChat
 import os
 import importlib.util
+import logging
+import subprocess
+import inspect
+logger = logging.getLogger(__name__)
 
 nc_agent = NCHelper()
 
@@ -115,9 +119,45 @@ def load_plugin(path):
             if filename.endswith('.py') and not filename.startswith('__init'):
                 spec = importlib.util.spec_from_file_location(filename[:-3], os.path.join(path, filename))
                 module = importlib.util.module_from_spec(spec)
-                spec.loader.exec_module(module)
+                logger.info(f'Loading plugin {module.__file__}')
+                if verify_module_env(spec.origin):
+                    install_required_lib(spec.origin)
+                    try:
+                        spec.loader.exec_module(module)
+                    except Exception as ex:
+                        logger.error(f'Load plugin {module.__file__} error: {ex}')
+                else:
+                    logger.warning(f'Invalid plugin {module.__file__}: no required variable lugins_required_module_version found')
         elif os.path.isdir(tmppath):
             load_plugin(tmppath)
 
 
+def verify_module_env(spec_origin):
+    parent_dir_path = os.path.dirname(spec_origin)
+    requirements_txt_path = os.path.join(parent_dir_path, 'module_env.txt')
+    if os.path.exists(requirements_txt_path):
+        requirements = [line.strip() for line in open(requirements_txt_path, 'r')]
+        for requirement in requirements:
+            if os.environ.get(requirement) is None:
+                logger.warning(f'Required env {requirement} is not set for plugin: {spec_origin}, not load')
+                return False     
+    else:
+        logger.info(f'No module_env.txt found for {spec_origin}, deem doesn\'t required')
+    return True
 
+
+def install_required_lib(spec_origin):
+    parent_dir_path = os.path.dirname(spec_origin)
+    requirements_txt_path = os.path.join(parent_dir_path, 'requirements.txt')
+    if os.path.exists(requirements_txt_path):
+        process = subprocess.Popen(['pip', 'install', '-U','-r',requirements_txt_path], stdout=subprocess.PIPE)
+        output, error = process.communicate()
+        if error:
+            logger.error(f'Install lib for {spec_origin} error:\n{error}')
+            return False
+        else:
+            logger.info(f'Install lib for {spec_origin} success')
+            # logger.debug(f'Install {spec_origin} output:\n{output}')
+    else:
+        logger.info(f'No requirements.txt found for {spec_origin}')
+    return True

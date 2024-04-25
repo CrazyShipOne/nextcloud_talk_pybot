@@ -1,7 +1,6 @@
-from ncbot.plugins.utils.history import get_instance, MemoryHistoryUtil
+from ncbot.utils.history import history_util
 import ncbot.command.base as base
 
-history_util = get_instance()
 
 plugin_name = 'setting'
 

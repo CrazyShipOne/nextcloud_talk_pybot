@@ -70,6 +70,13 @@ Set if plugin will be used.
 ##### HuggingFace
 `HFACE_TOEKN`: HuggingFace's token.
 
+##### BedRock
+Set environment variable as same as using boto3 library. Minimum envs are:<br/>
+`AWS_ACCESS_KEY_ID`: Access key.<br/>
+`AWS_SECRET_ACCESS_KEY`: Secret Key.<br/>
+`AWS_DEFAULT_REGION`: Region of the model.<br/>
+Also use !bedrock:set_model_id if not using default Claude 3 Haiku model.
+
 
 ## 🚊 Usage
 
@@ -82,12 +89,12 @@ Set if plugin will be used.
 ## ▶️ Road Map
 
 * Add LLM plugins:
-    * OpenAI (Partly finished)
-    * Google Bard
-    * Claude
-    * Models on Huggingface
+    * OpenAI (Not support Azure OpenAI)✅
+    * Google Gemini
+    * Claude✅(By AWS BedRock)
+    * Models on Huggingface✅
     * Models run on local machine
 * Add Tool plugins:
     * Search result from google
     * Weather
-* Add memory for LLM plugins
+* Add memory for conversation✅
