@@ -1,5 +1,5 @@
-from ncbot.nc_helper import NCHelper
-from ncbot.nc_chat import NCChat
+from ncbot.nc_impl.nc_helper import NCHelper
+from ncbot.nc_impl.nc_chat import NCChat
 import os
 import importlib.util
 import logging

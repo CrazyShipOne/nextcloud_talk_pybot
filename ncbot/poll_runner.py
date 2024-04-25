@@ -1,11 +1,11 @@
 import time
-from ncbot.nc_helper import NCHelper
+from ncbot.nc_impl.nc_helper import NCHelper
 import traceback
-from ncbot.nc_chat import NCChat
+from ncbot.nc_impl.nc_chat import NCChat
 import ncbot.command.commander as commander
 from ncbot.log_config import logger
 import ncbot.config as ncconfig
-import ncbot.nc_constants as ncconstants
+import ncbot.nc_impl.nc_constants as ncconstants
 
 nc_agent = NCHelper()
 

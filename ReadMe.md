@@ -67,6 +67,15 @@ Set if plugin will be used.
 ##### OpanAI
 `OPENAI_API_KEY`: OpenAI's api key.
 
+##### Google Gemini
+`GOOGLE_API_KEY`: Google project's api key.
+
+##### Azure OpanAI
+`AZURE_OPENAI_API_KEY`: OpenAI's api key.
+`AZURE_OPENAI_ENDPOINT`: Endpoints of Azure project.
+`OPENAI_API_VERSION`: Api version of response.
+`AZURE_OPENAI_CHAT_DEPLOYMENT_NAME`: Deployment name of model of Azure project.
+
 ##### HuggingFace
 `HFACE_TOEKN`: HuggingFace's token.
 
@@ -89,10 +98,12 @@ Also use !bedrock:set_model_id if not using default Claude 3 Haiku model.
 ## ▶️ Road Map
 
 * Add LLM plugins:
-    * OpenAI (Not support Azure OpenAI)✅
-    * Google Gemini
+    * OpenAI✅
+    * Azure OpenAI✅
+    * Google Gemini✅
     * Claude✅(By AWS BedRock)
     * Models on Huggingface✅
+    * Anthropic✅
     * Models run on local machine
 * Add Tool plugins:
     * Search result from google

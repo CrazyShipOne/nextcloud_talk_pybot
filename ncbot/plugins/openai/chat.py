@@ -1,33 +1,32 @@
 import ncbot.command.base as base
 
 from ncbot.log_config import logger
-from ncbot.utils.history import history_util
+from ncbot.storages.storage_store import StorageStore
 
 from langchain_openai import ChatOpenAI
-from ncbot.prompt_config import default_history_template
-from langchain.chains import ConversationChain
+from ncbot.utils.llm_util import get_user_chat_response
+
 
 plugin_name = 'openai'
-model_gpt_4 = 'gpt-4'
+store = StorageStore.get_instance()
 model_gpt_3 = 'gpt-3.5-turbo'
 
-llm_gpt3 = ChatOpenAI(temperature=0.5, model_name=model_gpt_3)
-llm_gpt4 = ChatOpenAI(temperature=0.5, model_name=model_gpt_4)
+llm = ChatOpenAI(temperature=0.7, model_name=model_gpt_3)
 
 
-@base.command(plname=plugin_name, funcname='chat3',desc='Chat with Chatgpt using gpt-3.5-turbo model')
+@base.command(plname=plugin_name, funcname='chat3',desc='Chat with Chatgpt')
 def chat3(userid, username, input):
-    history = history_util.get_memory(userid)
-    llm_chain = ConversationChain(llm=llm_gpt3, memory = history, verbose=False, prompt=default_history_template)
-    response = llm_chain.predict(input=input)
-    history_util.save_memory(userid, history)
-    return response
+    global llm
+    model_name = store.get_key(get_user_model_id_key(userid))
+    if model_name and model_name != llm.model_name:
+        llm = ChatOpenAI(azure_deployment=model_name)
+    return get_user_chat_response(llm, userid, input)
 
 
-@base.command(plname=plugin_name, funcname='chat4',desc='Chat with Chatgpt using gpt-4 model')
-def chat4(userid, username, input):
-    history = history_util.get_memory(userid)
-    llm_chain = ConversationChain(llm=llm_gpt4, memory = history, verbose=False, prompt=default_history_template)
-    response = llm_chain.predict(input=input)
-    history_util.save_memory(userid, history)
-    return response
+@base.command(plname=plugin_name, funcname='set_model_name',desc='Set model name, default is gpt-3.5-turbo')
+def set_model(userid, username, input):
+    store.set_key(get_user_model_id_key(userid), input)
+    return f'Model name is set to {input}'
+
+def get_user_model_id_key(userid):
+    return f'{plugin_name}_{userid}_model_name'
