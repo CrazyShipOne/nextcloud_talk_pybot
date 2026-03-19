@@ -1,3 +1,5 @@
+_Archive this repo since there are lots of native bots and claw families nowadays._
+
 # 💬 👲 NC Bot - A Nextcloud Chat Bot
 
 A simple standalone chat bot empowered by LLM services and AI models working with [Nextcloud](https://nextcloud.com) [Talk App](https://nextcloud.com/talk/).
